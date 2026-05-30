@@ -26,6 +26,8 @@ export const NAV: NavSection[] = [
       { id: "brief", label: "Brief", href: "/command" },
       { id: "actions", label: "Actions", href: "/command/actions" },
       { id: "calendar", label: "Calendar", href: "/command/calendar" },
+      { id: "ea", label: "EA", href: "/command/ea" },
+      { id: "chat", label: "Chat", href: "/command/chat" },
     ],
   },
   {

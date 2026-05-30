@@ -134,25 +134,29 @@ export async function runTwinPipeline(req: TwinRequest): Promise<TwinResponse> {
   const canAutoSend =
     finalTier === 1 && risk.canAutoExecute && outputCeiling.passed && !deadMan;
 
-  // 10. Queue (60s cancel window) or leave for EA review.
-  let queueId: string | undefined;
-  if (canAutoSend) {
-    const sendAt = new Date(Date.now() + SEND_QUEUE_DELAY_SECONDS * 1000).toISOString();
-    const { data: queued } = await supabase
-      .from("send_queue")
-      .insert({
-        message_content: responseText,
-        recipient_person_id: req.person.id,
-        company_id: req.companyId,
-        channel: "chat",
-        risk_tier: `tier${finalTier}`,
-        confidence,
-        send_at: sendAt,
-      })
-      .select()
-      .single();
-    queueId = queued?.id;
-  }
+  // 10. Always persist the draft to send_queue. Auto-sends get status 'queued'
+  // (the per-minute cron delivers after the 60s window). Everything else gets
+  // 'pending_review' so it surfaces in the EA dashboard — the cron never touches
+  // those (it only processes status='queued').
+  const status = canAutoSend ? "queued" : "pending_review";
+  const sendAt = new Date(
+    Date.now() + (canAutoSend ? SEND_QUEUE_DELAY_SECONDS * 1000 : 0),
+  ).toISOString();
+  const { data: queued } = await supabase
+    .from("send_queue")
+    .insert({
+      message_content: responseText,
+      recipient_person_id: req.person.id,
+      company_id: req.companyId,
+      channel: "chat",
+      risk_tier: `tier${finalTier}`,
+      confidence,
+      status,
+      send_at: sendAt,
+    })
+    .select()
+    .single();
+  const queueId: string | undefined = queued?.id;
 
   // 11. Audit + learn.
   await writeAudit({
