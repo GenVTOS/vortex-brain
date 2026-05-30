@@ -1,0 +1,9 @@
+{
+  "name": "Vortex Brain",
+  "short_name": "Vortex",
+  "start_url": "/command",
+  "display": "standalone",
+  "background_color": "#0B0C10",
+  "theme_color": "#0B0C10",
+  "icons": []
+}
