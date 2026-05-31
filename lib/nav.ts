@@ -72,7 +72,9 @@ export const NAV: NavSection[] = [
     color: T.amber,
     basePath: "/system",
     tabs: [
+      { id: "train", label: "Train", href: "/system/train" },
       { id: "autonomy", label: "Autonomy", href: "/system/autonomy" },
+      { id: "security", label: "Security", href: "/system/security" },
       { id: "observer", label: "Observer", href: "/system/observer" },
       { id: "intel", label: "Intel", href: "/system/intel" },
     ],

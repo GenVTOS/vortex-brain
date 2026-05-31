@@ -1,6 +1,7 @@
 import { TopBar } from "@/components/layout/TopBar";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { SubTabs } from "@/components/layout/SubTabs";
+import { SWRegister } from "@/components/pwa/SWRegister";
 import { T } from "@/lib/design/tokens";
 
 export default function AppLayout({
@@ -21,6 +22,7 @@ export default function AppLayout({
         overflow: "hidden",
       }}
     >
+      <SWRegister />
       <TopBar />
       <SubTabs />
       <main

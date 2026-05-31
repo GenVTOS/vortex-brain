@@ -121,7 +121,14 @@ export async function runTwinPipeline(req: TwinRequest): Promise<TwinResponse> {
     messages: [{ role: "user", content: req.message }],
   });
   const block = msg.content.find((b) => b.type === "text");
-  const responseText = block && block.type === "text" ? block.text : ESCALATE;
+  let responseText = block && block.type === "text" ? block.text : ESCALATE;
+
+  // Transparency mode (spec §8.6, hardening V-11.1): if on, mark assistant-sent
+  // messages. The bot still never LIES about being AI if asked directly.
+  const { data: cfg } = await supabase.from("system_config").select("transparency_mode").eq("id", 1).maybeSingle();
+  if (cfg?.transparency_mode && responseText !== ESCALATE) {
+    responseText = `${responseText}\n\n— via Michael's assistant`;
+  }
 
   // 8. Post-generation ceiling check (contractual language in the OUTPUT).
   const outputCeiling = checkHardCeilings({
