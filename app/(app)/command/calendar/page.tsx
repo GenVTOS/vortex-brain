@@ -30,6 +30,10 @@ export default function CalendarPage() {
   return (
     <>
       <div style={{ fontSize: 18, fontWeight: 600, color: T.white, marginBottom: 10 }}>Calendar</div>
+      <div style={{ padding: "8px 12px", borderRadius: 10, background: T.amber + "10", border: `1px solid ${T.amber}22`, marginBottom: 12 }}>
+        <div style={{ fontSize: 10, color: T.amber, fontWeight: 600 }}>Connect Google Calendar</div>
+        <div style={{ fontSize: 9, color: T.sub, marginTop: 2 }}>The schedule below is illustrative. Link your Google account to see your real calendar, time allocation, and let the bot reschedule on your behalf.</div>
+      </div>
       <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
         {days.map((d, i) => (
           <div

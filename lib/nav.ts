@@ -61,6 +61,7 @@ export const NAV: NavSection[] = [
     tabs: [
       { id: "council", label: "Council", href: "/wisdom/council" },
       { id: "search", label: "Search", href: "/wisdom/search" },
+      { id: "vault", label: "Vault", href: "/wisdom/vault" },
       { id: "books", label: "Books", href: "/wisdom/books" },
     ],
   },
